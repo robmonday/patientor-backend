@@ -1,0 +1,33 @@
+{
+  "name": "patientor-backend",
+  "version": "1.0.0",
+  "description": "This project is in Part 9 of the [Fullstack Open course](https://fullstackopen.com/en/part9/typing_an_express_app).",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node-dev index.ts",
+    "lint": "eslint --ext .ts .",
+    "start": "node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robmonday/patientor-backend.git"
+  },
+  "author": "Rob M",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robmonday/patientor-backend/issues"
+  },
+  "homepage": "https://github.com/robmonday/patientor-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.5"
+  }
+}

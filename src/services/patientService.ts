@@ -1,12 +1,17 @@
-import patientData from "../../data/patients";
+import patientData from '../../data/patients';
 
-import { NewPatientEntry, PatientSafe } from "../types";
+import { NewPatientEntry, NonSensitivePatient } from '../types';
 
-import { v1 as uuid } from "uuid";
+import { v1 as uuid } from 'uuid';
 
-export const getPatients = (): PatientSafe[] => {
-  const output: PatientSafe[] = patientData;
+export const getPatients = (): NonSensitivePatient[] => {
+  const output: NonSensitivePatient[] = patientData;
   return output;
+};
+
+export const getPatientById = (id: string): NonSensitivePatient => {
+  const patient: NonSensitivePatient[] = patientData.filter((p) => p.id === id);
+  return patient[0]; // return only first item in array
 };
 
 export const addPatient = (entry: NewPatientEntry) => {

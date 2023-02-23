@@ -1,13 +1,13 @@
-import { NewPatientEntry, Gender } from "./types";
+import { NewPatientEntry, Gender } from './types';
 
 // helper, type guard with type predicate
 const isString = (text: unknown): text is string => {
-  return typeof text === "string" || text instanceof String;
+  return typeof text === 'string' || text instanceof String;
 };
 
 const parseName = (name: unknown): string => {
   if (!name || !isString(name)) {
-    throw new Error("Incorrect or missing name");
+    throw new Error('Incorrect or missing name');
   }
   return name;
 };
@@ -19,21 +19,21 @@ const isDate = (date: string): boolean => {
 
 const parseDateOfBirth = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
-    throw new Error("Incorrect or missing date: " + date);
+    throw new Error('Incorrect or missing date: ' + date);
   }
   return date;
 };
 
 const parseSSN = (ssn: unknown): string => {
   if (!ssn || !isString(ssn)) {
-    throw new Error("Incorrect or missing SSN");
+    throw new Error('Incorrect or missing SSN');
   }
   return ssn;
 };
 
 const parseOccupation = (occupation: unknown): string => {
   if (!occupation || !isString(occupation)) {
-    throw new Error("Incorrect or missing occupation");
+    throw new Error('Incorrect or missing occupation');
   }
   return occupation;
 };
@@ -46,22 +46,22 @@ const isGender = (param: string): param is Gender => {
 
 const parseGender = (gender: unknown): Gender => {
   if (!gender || !isString(gender) || !isGender(gender)) {
-    throw new Error("Incorrect or misssing gender: " + gender);
+    throw new Error('Incorrect or misssing gender: ' + gender);
   }
   return gender;
 };
 
 export function toNewPatient(object: unknown): NewPatientEntry {
-  if (!object || typeof object !== "object") {
-    throw new Error("Incorrect or missing data");
+  if (!object || typeof object !== 'object') {
+    throw new Error('Incorrect or missing data');
   }
 
   if (
-    "name" in object &&
-    "dateOfBirth" in object &&
-    "ssn" in object &&
-    "gender" in object &&
-    "occupation" in object
+    'name' in object &&
+    'dateOfBirth' in object &&
+    'ssn' in object &&
+    'gender' in object &&
+    'occupation' in object
   ) {
     const newEntry: NewPatientEntry = {
       name: parseName(object.name),
@@ -74,5 +74,5 @@ export function toNewPatient(object: unknown): NewPatientEntry {
     return newEntry;
   }
 
-  throw new Error("Incorrect data: some fields are missing");
+  throw new Error('Incorrect data: some fields are missing');
 }

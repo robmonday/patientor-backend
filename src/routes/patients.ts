@@ -1,13 +1,17 @@
-import express from "express";
+import express from 'express';
 const router = express.Router();
 
-import { getPatients, addPatient } from "../services/patientService";
-import { toNewPatient } from "../utils";
+import {
+  getPatients,
+  addPatient,
+  getPatientById,
+} from '../services/patientService';
+import { toNewPatient } from '../utils';
 
-import { PatientSafe } from "../types";
+import { NonSensitivePatient } from '../types';
 
-router.get("/", (_req, res) => {
-  const safePatients: PatientSafe[] = getPatients().map(
+router.get('/', (_req, res) => {
+  const safePatients: NonSensitivePatient[] = getPatients().map(
     ({ id, name, dateOfBirth, gender, occupation }) => ({
       id,
       name,
@@ -19,7 +23,12 @@ router.get("/", (_req, res) => {
   res.send(safePatients);
 });
 
-router.post("/", (req, res) => {
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  res.json(getPatientById(id));
+});
+
+router.post('/', (req, res) => {
   const newPatientEntry = toNewPatient(req.body);
   const addedPatient = addPatient(newPatientEntry);
 

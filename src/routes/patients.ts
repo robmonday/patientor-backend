@@ -8,19 +8,15 @@ import {
 } from '../services/patientService';
 import { toNewPatient } from '../utils';
 
-import { NonSensitivePatient } from '../types';
+import { Patient } from '../types';
 
 router.get('/', (_req, res) => {
-  const safePatients: NonSensitivePatient[] = getPatients().map(
-    ({ id, name, dateOfBirth, gender, occupation }) => ({
-      id,
-      name,
-      dateOfBirth,
-      gender,
-      occupation,
-    })
+  const patients: Patient[] = getPatients().map(
+    ({ id, name, gender, dateOfBirth, ssn, occupation, entries }) => {
+      return { id, name, gender, dateOfBirth, ssn, occupation, entries };
+    }
   );
-  res.send(safePatients);
+  res.send(patients);
 });
 
 router.get('/:id', (req, res) => {

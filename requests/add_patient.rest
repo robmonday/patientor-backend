@@ -3,8 +3,8 @@ Content-Type: application/json
 
 {
   "name": "Rob Monday",
+  "gender": "male",
   "dateOfBirth": "1983-08-04",
   "ssn": "123-45-6789",
-  "gender": "male",
   "occupation": "entrepreneur"
 }

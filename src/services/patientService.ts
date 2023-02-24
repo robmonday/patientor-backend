@@ -1,6 +1,6 @@
 import patientData from '../../data/patients';
 
-import { NewPatientEntry, Patient, Entry } from '../types';
+import { NewPatientInfo, Patient, NewEntryInfo, Entry } from '../types';
 
 import { v1 as uuid } from 'uuid';
 
@@ -9,16 +9,44 @@ export const getPatients = (): Patient[] => {
   return output;
 };
 
-export const getPatientById = (id: string): Patient => {
-  const patient: Patient[] = patientData.filter((p) => p.id === id);
-  return patient[0]; // return only first item in array
+export const getPatientById = (id: string): Patient | undefined => {
+  const patient: Patient | undefined = patientData.find((p) => p.id === id);
+  return patient;
 };
 
-export const addPatient = (entry: NewPatientEntry) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-  const id: string = uuid();
-  const entries: Entry[] = [];
-  const newPatientEntry = { id, entries, ...entry };
-  patientData.push(newPatientEntry);
-  return newPatientEntry;
+export const getEntriesByPatientId = (id: string): Entry[] | undefined => {
+  const patient: Patient | undefined = patientData.find((p) => p.id === id);
+  return patient?.entries;
+};
+
+export const addPatient = (newPatientInfo: NewPatientInfo): Patient => {
+  const id: string = uuid(); //create id for patient
+  const entries: Entry[] = []; //create empty note array for patient
+
+  const newPatient: Patient = { id, entries, ...newPatientInfo }; //create new patient
+  patientData.push(newPatient); //save to patient data
+  return newPatient; //return updated patient data
+};
+
+export const addEntryByPatientId = (
+  patientId: string,
+  newEntryInfo: NewEntryInfo
+): Patient | undefined => {
+  const id: string = uuid(); //create id for entry
+
+  const patient: Patient | undefined = patientData.find(
+    //find patient
+    (p) => p.id === patientId
+  );
+
+  if (!patient) {
+    //if patient not found, return undefined
+    return;
+  }
+
+  const newEntry: Entry = { ...newEntryInfo, id }; //otherwise, create entry
+
+  patient.entries = [...patient.entries, newEntry]; //append entry to patient
+
+  return patient; //return updated patient data
 };

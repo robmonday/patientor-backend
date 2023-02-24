@@ -1,4 +1,11 @@
-import { NewPatientEntry, Gender } from './types';
+import {
+  Gender,
+  NewPatientInfo,
+  NewEntryInfo,
+  HealthCheckEntry,
+  OccupationalHealthcareEntry,
+  HospitalEntry,
+} from './types';
 
 // helper, type guard with type predicate
 const isString = (text: unknown): text is string => {
@@ -51,7 +58,7 @@ const parseGender = (gender: unknown): Gender => {
   return gender;
 };
 
-export function toNewPatient(object: unknown): NewPatientEntry {
+export function toNewPatient(object: unknown): NewPatientInfo {
   if (!object || typeof object !== 'object') {
     throw new Error('Incorrect or missing data');
   }
@@ -63,7 +70,7 @@ export function toNewPatient(object: unknown): NewPatientEntry {
     'gender' in object &&
     'occupation' in object
   ) {
-    const newEntry: NewPatientEntry = {
+    const newPatientInfo: NewPatientInfo = {
       name: parseName(object.name),
       dateOfBirth: parseDateOfBirth(object.dateOfBirth),
       ssn: parseSSN(object.ssn),
@@ -71,8 +78,55 @@ export function toNewPatient(object: unknown): NewPatientEntry {
       occupation: parseOccupation(object.occupation),
     };
 
-    return newEntry;
+    return newPatientInfo;
   }
 
   throw new Error('Incorrect data: some fields are missing');
+}
+
+// supporting parse functions would go here...
+
+export function toNewPatientEntry(object: unknown): NewEntryInfo | void {
+  if (!object || typeof object !== 'object') {
+    throw new Error('Incorrect or missing data');
+  }
+
+  if ('type' in object) {
+    switch (object.type) {
+      case 'Hospital':
+        if (
+          'description' in object &&
+          'date' in object &&
+          'specialist' in object
+        ) {
+          return object as HospitalEntry;
+        }
+        throw new Error('Incorrect data: some required fields are missing');
+
+      case 'OccupationalHealthcare':
+        if (
+          'description' in object &&
+          'date' in object &&
+          'specialist' in object &&
+          'employerName' in object
+        ) {
+          return object as OccupationalHealthcareEntry;
+        }
+        throw new Error('Incorrect data: some required fields are missing');
+
+      case 'HealthCheck':
+        if (
+          'description' in object &&
+          'date' in object &&
+          'specialist' in object &&
+          'healthCheckRating' in object
+        ) {
+          return object as HealthCheckEntry;
+        }
+        throw new Error('Incorrect data: some required fields are missing');
+
+      default:
+        throw new Error('Incorrect data: entry type is not defined');
+    }
+  }
 }
